@@ -3,8 +3,15 @@
   <PropertyGroup>
     <TargetFrameworks>$(BuildFrameworks)</TargetFrameworks>
     <Product>Blueshift MongoDb Provider for EntityFrameworkCore</Product>
-    <Description>Blueshift Software MongoDb Provider for Microsoft EntityFramework Core</Description>
+    <Description>Blueshift Software MongoDb Provider for Microsoft EntityFramework Core. This is forked version for Horta.</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeSource>true</IncludeSource>
+    <IncludeSymbols>true</IncludeSymbols>
+    <PackageId>Blueshift.EntityFrameworkCore.MongoDB.Horta</PackageId>
+    <Version>2.1.0</Version>
+    <PackageReleaseNotes>Added a number of fixes for Horta</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/mytnyk/EntityFrameworkCore.git</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
