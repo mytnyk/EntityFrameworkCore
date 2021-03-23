@@ -141,7 +141,12 @@ namespace Blueshift.EntityFrameworkCore.MongoDB.Storage
 
         /// <inheritdoc />
         public override Func<QueryContext, IAsyncEnumerable<TResult>> CompileAsyncQuery<TResult>(QueryModel queryModel)
-            => queryContext => CompileQuery<TResult>(queryModel)(queryContext).ToAsyncEnumerable();
+        {
+            // PR https://github.com/BlueshiftSoftware/EntityFrameworkCore/pull/42/commits/22b5c900c934574d4acc6bf88485b5313637a8e4
+            // Fixing the case with ObjectDisposedException for DbContext when executing the same async query on different contexts
+            var syncQueryExecutor = CompileQuery<TResult>(queryModel);
+            return queryContext => syncQueryExecutor(queryContext).ToAsyncEnumerable();
+        }
 
         private IUpdateEntry GetRootDocument(InternalEntityEntry entry)
         {
