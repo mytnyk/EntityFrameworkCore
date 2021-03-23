@@ -77,9 +77,15 @@ namespace Blueshift.EntityFrameworkCore.MongoDB.Query.ExpressionVisitors
                     }
                 }
 
-                newExpression = Expression.Convert(
-                    Expression.MakeMemberAccess(targetExpression, propertyInfo),
-                    typeof(Nullable<>).MakeGenericType(propertyInfo.PropertyType));
+                // Fixing the case with accessing navigation member, which is optional and currently is null
+                newExpression =
+                    Expression.Condition(
+                        Expression.Equal(targetExpression, Expression.Constant(null, targetExpression.Type)),
+                        Expression.Convert(Expression.Constant(null),
+                            typeof(Nullable<>).MakeGenericType(propertyInfo.PropertyType)),
+                        Expression.Convert(
+                            Expression.MakeMemberAccess(targetExpression, propertyInfo),
+                            typeof(Nullable<>).MakeGenericType(propertyInfo.PropertyType)));
             }
 
             return newExpression ?? base.VisitMethodCall(methodCallExpression);
